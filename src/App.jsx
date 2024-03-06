@@ -27,11 +27,24 @@ function App() {
       
       // Check if the audio context is closed and create a new one if necessary
       if (!audioContext || audioContext.state === "closed") {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        try {
+          // Initialize the audio context
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  
+          // Clear the array of active audio sources before starting playback
+          await Promise.all(activeAudioSources.map((audioSource) => audioSource.stop()));
+          activeAudioSources.length = 0;
+        } catch (error) {
+          console.error("Error initializing audio context:", error);
+        }
       }
-      // Clear the array of active audio sources before starting playback
-      await Promise.all(activeAudioSources.map((audioSource) => audioSource.stop()));
-      activeAudioSources.length = 0;
+      
+      //Check if the audio context is suspended
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      
 
       audioPills.forEach((file) => {
         const audioSource = audioContext.createBufferSource();
@@ -56,12 +69,6 @@ function App() {
   const pauseHandler = () => {
     setIsPlaying(false);
     audioContext.suspend(); // Pause the audio context to pause playback
-  };
-
-  // resume audio
-  const resumeHandler = () => {
-    setIsPlaying(true);
-    audioContext.resume(); // Resume the audio context to resume playback
   };
 
   const resetHandler = async () => {
@@ -126,19 +133,10 @@ function App() {
                   Reset
                 </button>
               </>
-            ) : progress === 0 ? (
+            ) : (
               <>
                 <button className="audioBtn" id="play-button" onClick={playHandler}>
                   Play
-                </button>
-                <button className="audioBtn" onClick={resetHandler}>
-                  Reset
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="audioBtn" id="resume-button" onClick={resumeHandler}>
-                  Resume
                 </button>
                 <button className="audioBtn" onClick={resetHandler}>
                   Reset
