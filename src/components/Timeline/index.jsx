@@ -6,7 +6,7 @@ import styles from "./Timeline.module.css";
 
 const TimelineRow = ({ audioData, totalDuration }) => {
   const { audioName, duration, startTime, bgColor, id } = audioData;
-  const { audioPills, setAudioPills } = useAudio();
+  const { audioPills, setNewAudioPills } = useAudio();
 
   const [isDragging, setIsDragging] = useState(false);
   const [leftMargin, setLeftMargin] = useState(
@@ -60,7 +60,7 @@ const TimelineRow = ({ audioData, totalDuration }) => {
   const handleMouseUp = () => {
     setIsDragging(false);
     // update audio start time based on dragged position
-    setAudioPills((prevPills) => {
+    setNewAudioPills((prevPills) => {
       return prevPills.map((pill) => {
         if (pill.id === selectedPill) {
           pill.startTime = (totalDuration * leftMargin) / 100;

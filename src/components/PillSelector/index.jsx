@@ -10,11 +10,13 @@ if ("AudioContext" in window || "webkitAudioContext" in window) {
 } else {
   console.error("Web Audio API is not supported in this browser.");
 }
+
 const PillSelector = () => {
-  const { setAudioPills } = useAudio();
+  const { setNewAudioPills, addActiveAudioSource, addActiveAudioContext } = useAudio();
+
 
   const pillClickHandler = (soundSource, soundName, soundColor) => {
-    let duration;
+    addActiveAudioContext(audioContext);
 
     // Load and decode the audio file
     fetch(soundSource)
@@ -24,36 +26,29 @@ const PillSelector = () => {
         audioContext
           .decodeAudioData(arrayBuffer, (buffer) => {
             // get duration of selected file
-            duration = buffer.duration;
+            const duration = buffer.duration;
 
-            // adding new file to state array
-            setAudioPills((prevPills) => {
-              const l = prevPills.length;
+            // Create a new audio source
+            const audioSource = audioContext.createBufferSource();
+            audioSource.buffer = buffer;
+            audioSource.startTime = 0;
+            audioSource.duration = duration;
+            audioSource.path = soundSource;
 
-              // duration of last audio pill in state array
-              const lastUpdatedDuration =
-                l !== 0 ? prevPills[l - 1].duration : null;
-
-              // starting point of last audio pill in state array
-              const lastUpdatedStartpoint =
-                l !== 0 ? prevPills[l - 1].startTime : null;
-
-              // calculate new starting point for current audio file
-              // just after the last audio file
-              const newStartPoint = lastUpdatedDuration
-                ? lastUpdatedDuration + lastUpdatedStartpoint
-                : 0;
-              return [
-                ...prevPills,
-                {
-                  id: Math.random(),
-                  audioName: soundName,
-                  path: soundSource,
-                  duration,
-                  startTime: newStartPoint,
-                  bgColor: soundColor,
-                },
-              ];
+            // Add the new pill to the list of audio pills
+            setNewAudioPills((prevPills) => [
+              ...prevPills,
+              {
+                id: Math.random(),
+                audioName: soundName,
+                path: soundSource,
+                duration,
+                startTime: 0,
+                bgColor: soundColor,
+              },
+            ]).then(() => {
+              // Add the audio source to the list of active audio sources
+              addActiveAudioSource(audioContext, audioSource);
             });
           })
           .catch((error) => {
