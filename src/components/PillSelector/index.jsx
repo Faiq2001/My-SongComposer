@@ -30,6 +30,7 @@ const PillSelector = () => {
 
             // Create a new audio source
             const audioSource = audioContext.createBufferSource();
+            audioSource.id = Math.random();
             audioSource.buffer = buffer;
             audioSource.startTime = 0;
             audioSource.duration = duration;
@@ -39,7 +40,7 @@ const PillSelector = () => {
             setNewAudioPills((prevPills) => [
               ...prevPills,
               {
-                id: Math.random(),
+                id: audioSource.id,
                 audioName: soundName,
                 path: soundSource,
                 duration,

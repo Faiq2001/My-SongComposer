@@ -44,6 +44,7 @@ function App() {
           .then((data) => audioContext.decodeAudioData(data))
           .then((decodedBuffer) => {
             const audioSource = audioContext.createBufferSource();
+            audioSource.id = file.id;
             audioSource.buffer = decodedBuffer;
             audioSource.startTime = file.startTime;
             audioSource.duration = decodedBuffer.duration;

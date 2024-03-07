@@ -17,12 +17,11 @@ export const AudioProvider = ({ children }) => {
     });
   };
 
-  const playAudio = (audioContext, audioSource, path) => {
+  const playAudio = (audioContext,audioSource) => {
     audioSource.connect(audioContext.destination);
-    const startTime = audioSource.startTime; // Set the start time from the audio file data
-    if (progress <= startTime + audioSource.duration) {
+    if (progress <= audioSource.startTime + audioSource.duration) {
       // Check if the current progress is within the duration of the audio file
-      const offset = Math.max(progress - startTime, 0); // Calculate the offset for starting the audio
+      const offset = Math.max(progress - audioSource.startTime, 0); // Calculate the offset for starting the audio
       audioSource.start(0, offset);
     }  
   };
