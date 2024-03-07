@@ -26,6 +26,11 @@
   align-items: center;
   color: #fff;
   font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.rowPill:hover {
+  cursor: pointer; /* Add this line */
 }
 
 .rowPill.dragging {
