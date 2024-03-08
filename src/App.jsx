@@ -1,72 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PillSelector, Timeline } from "./components";
 import { useAudio } from "./context";
 
 import "./App.css";
 
-// Check if the Web Audio API is supported in the current browser
-// let audioContext;
-// if ("AudioContext" in window || "webkitAudioContext" in window) {
-//   audioContext = new (window.AudioContext || window.webkitAudioContext)();
-// } else {
-//   console.error("Web Audio API is not supported in this browser.");
-// }
-
 function App() {
-  const {
-    audioPills,
-    totalDuration,
-    setIsPlaying,
-    isPlaying,
-    progress,
-    setProgress,
-    addActiveAudioSource,
-    activeAudioContexts,
-    addActiveAudioContext,
-    playAudio,
-  } = useAudio();
+  const { audioPills,totalDuration,setIsPlaying,isPlaying,progress,setProgress,playAudio } = useAudio();
 
+  //Play Audio
   const playHandler = async () => {
-    if (!isPlaying) {
-      setIsPlaying(true);
-
-      // addActiveAudioContext(audioContext);
-
-      // //Check if the audio context is suspended
-      // if (audioContext.state === "suspended") {
-      //   audioContext.resume();
-      // }
-
-      audioPills.forEach((file) => {
-        // Load and decode the audio file
-        // fetch(file.path)
-        //   .then((response) => response.arrayBuffer())
-        //   .then((data) => audioContext.decodeAudioData(data))
-        //   .then((decodedBuffer) => {
-        //     const audioSource = audioContext.createBufferSource();
-        //     audioSource.id = file.id;
-        //     audioSource.buffer = decodedBuffer;
-        //     audioSource.startTime = file.startTime;
-        //     audioSource.duration = decodedBuffer.duration;
-        //     audioSource.path = file.path;
-
-            playAudio(file);
-
-          //   addActiveAudioSource(audioSource);
-          // })
-          // .catch((error) => console.error("Error loading audio file: ", error));
-      });
-    }
+    setIsPlaying(true);
+    audioPills.forEach((file) => { playAudio(file); });
   };
 
   // Pause Audio
   const pauseHandler = () => {
-    
     audioPills.forEach((pill) => {
       pill.context.suspend(); 
     });
     setIsPlaying(false);
-
   };
 
   // progress bar update
@@ -84,7 +36,11 @@ function App() {
     };
   }, [isPlaying]);
 
+  // Check for whether to start the audio or end the time
   useEffect(() => {
+
+    if(isPlaying)  audioPills.forEach((file) => { playAudio(file); });
+
     if (progress > totalDuration) {
       setProgress(0);
       setIsPlaying(false);
