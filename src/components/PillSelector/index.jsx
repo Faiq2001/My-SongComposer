@@ -4,19 +4,27 @@ import { useAudio } from "../../context";
 
 import styles from "./PillSelector.module.css";
 
-let audioContext;
-if ("AudioContext" in window || "webkitAudioContext" in window) {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
-} else {
-  console.error("Web Audio API is not supported in this browser.");
-}
+// let audioContext;
+// if ("AudioContext" in window || "webkitAudioContext" in window) {
+//   audioContext = new (window.AudioContext || window.webkitAudioContext)();
+// } else {
+//   console.error("Web Audio API is not supported in this browser.");
+// }
 
 const PillSelector = () => {
-  const { setNewAudioPills, addActiveAudioSource, addActiveAudioContext } = useAudio();
+  const { setNewAudioPills, addActiveAudioSource, addActiveAudioContext, playAudio, isPlaying } = useAudio();
 
 
   const pillClickHandler = (soundSource, soundName, soundColor) => {
-    addActiveAudioContext(audioContext);
+    // addActiveAudioContext(audioContext);
+
+
+    let audioContext;
+    if ("AudioContext" in window || "webkitAudioContext" in window) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } else {
+      console.error("Web Audio API is not supported in this browser.");
+    }
 
     // Load and decode the audio file
     fetch(soundSource)
@@ -30,27 +38,33 @@ const PillSelector = () => {
 
             // Create a new audio source
             const audioSource = audioContext.createBufferSource();
-            audioSource.id = Math.random();
+            // audioSource.id = Math.random();
             audioSource.buffer = buffer;
-            audioSource.startTime = 0;
-            audioSource.duration = duration;
-            audioSource.path = soundSource;
+            // audioSource.startTime = 0;
+            // audioSource.duration = duration;
+            // audioSource.path = soundSource;
 
+            // Create a new pill object
+            const newPill = {
+              id: Math.random(),
+              audioName: soundName,
+              path: soundSource,
+              source: audioSource,
+              context: audioContext,
+              duration,
+              startTime: 0,
+              bgColor: soundColor,
+            };
+            
             // Add the new pill to the list of audio pills
-            setNewAudioPills((prevPills) => [
-              ...prevPills,
-              {
-                id: audioSource.id,
-                audioName: soundName,
-                path: soundSource,
-                duration,
-                startTime: 0,
-                bgColor: soundColor,
-              },
-            ]).then(() => {
+            setNewAudioPills((prevPills) => [...prevPills, newPill])
+            if(isPlaying){ playAudio(newPill); }
+
+
+            // .then(() => {
               // Add the audio source to the list of active audio sources
-              addActiveAudioSource(audioContext, audioSource);
-            });
+              // addActiveAudioSource(audioContext, audioSource);
+            // });
           })
           .catch((error) => {
             console.error("Error decoding audio data:", error);

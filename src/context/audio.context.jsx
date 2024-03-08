@@ -17,13 +17,34 @@ export const AudioProvider = ({ children }) => {
     });
   };
 
-  const playAudio = (audioContext,audioSource) => {
+  const playAudio = (pill) => {
+    let audioSource = pill.source;
+    const buffer = pill.source.buffer;
+    const audioContext = pill.context;
+
     audioSource.connect(audioContext.destination);
-    if (progress <= audioSource.startTime + audioSource.duration) {
-      // Check if the current progress is within the duration of the audio file
-      const offset = Math.max(progress - audioSource.startTime, 0); // Calculate the offset for starting the audio
-      audioSource.start(0, offset);
-    }  
+
+    // Check if the current progress is within the duration of the audio file
+    if (progress>=pill.startTime && progress <= pill.startTime + pill.duration) {
+      if (audioContext.state === "suspended"){//Check if the audio context is suspended
+        audioContext.resume();
+      }
+      else{
+        if(!audioSource.state || audioSource.state === 'finished'){
+          pill.source.disconnect();
+          pill.source = audioContext.createBufferSource();
+          pill.source.buffer = buffer;
+          pill.source.connect(audioContext.destination);
+          audioSource = pill.source;
+        }
+        const offset = Math.max(progress - pill.startTime, 0); // Calculate the offset for starting the audio
+        audioSource.start(0, offset);
+      }
+      // Listen for when the audio playback ends
+      audioSource.onended = () => {
+        audioSource.stop();
+      }
+    }
   };
 
   // Function to add an audio source to the list of active audio sources

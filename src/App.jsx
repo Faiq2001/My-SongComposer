@@ -5,12 +5,12 @@ import { useAudio } from "./context";
 import "./App.css";
 
 // Check if the Web Audio API is supported in the current browser
-let audioContext;
-if ("AudioContext" in window || "webkitAudioContext" in window) {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
-} else {
-  console.error("Web Audio API is not supported in this browser.");
-}
+// let audioContext;
+// if ("AudioContext" in window || "webkitAudioContext" in window) {
+//   audioContext = new (window.AudioContext || window.webkitAudioContext)();
+// } else {
+//   console.error("Web Audio API is not supported in this browser.");
+// }
 
 function App() {
   const {
@@ -30,39 +30,40 @@ function App() {
     if (!isPlaying) {
       setIsPlaying(true);
 
-      addActiveAudioContext(audioContext);
+      // addActiveAudioContext(audioContext);
 
-      //Check if the audio context is suspended
-      if (audioContext.state === "suspended") {
-        audioContext.resume();
-      }
+      // //Check if the audio context is suspended
+      // if (audioContext.state === "suspended") {
+      //   audioContext.resume();
+      // }
 
       audioPills.forEach((file) => {
         // Load and decode the audio file
-        fetch(file.path)
-          .then((response) => response.arrayBuffer())
-          .then((data) => audioContext.decodeAudioData(data))
-          .then((decodedBuffer) => {
-            const audioSource = audioContext.createBufferSource();
-            audioSource.id = file.id;
-            audioSource.buffer = decodedBuffer;
-            audioSource.startTime = file.startTime;
-            audioSource.duration = decodedBuffer.duration;
-            audioSource.path = file.path;
+        // fetch(file.path)
+        //   .then((response) => response.arrayBuffer())
+        //   .then((data) => audioContext.decodeAudioData(data))
+        //   .then((decodedBuffer) => {
+        //     const audioSource = audioContext.createBufferSource();
+        //     audioSource.id = file.id;
+        //     audioSource.buffer = decodedBuffer;
+        //     audioSource.startTime = file.startTime;
+        //     audioSource.duration = decodedBuffer.duration;
+        //     audioSource.path = file.path;
 
-            playAudio(audioContext, audioSource);
+            playAudio(file);
 
-            addActiveAudioSource(audioSource);
-          })
-          .catch((error) => console.error("Error loading audio file: ", error));
+          //   addActiveAudioSource(audioSource);
+          // })
+          // .catch((error) => console.error("Error loading audio file: ", error));
       });
     }
   };
 
   // Pause Audio
   const pauseHandler = () => {
-    activeAudioContexts.forEach((audioContext) => {
-      audioContext.suspend(); 
+    
+    audioPills.forEach((pill) => {
+      pill.context.suspend(); 
     });
     setIsPlaying(false);
 
@@ -87,8 +88,11 @@ function App() {
     if (progress > totalDuration) {
       setProgress(0);
       setIsPlaying(false);
+      audioPills.forEach((pill) => {
+        pill.source.stop(); 
+      });
     }
-  }, [progress, totalDuration]);
+  }, [progress]);
 
   return (
     <div className="appContainer">

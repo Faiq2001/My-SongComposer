@@ -29,10 +29,6 @@
   cursor: pointer;
 }
 
-.rowPill:hover {
-  cursor: pointer; /* Add this line */
-}
-
 .rowPill.dragging {
   cursor: grab;
   cursor: -webkit-grab;
