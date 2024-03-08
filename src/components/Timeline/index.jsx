@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAudio } from "../../context";
 import { calculateOffset, calculateWidth } from "../../common/utils";
 
@@ -63,6 +63,9 @@ const TimelineRow = ({ audioData, totalDuration }) => {
     setNewAudioPills((prevPills) => {
       return prevPills.map((pill) => {
         if (pill.id === selectedPill) {
+          if(pill.source.state==='running'){
+            pill.context.suspend;
+          }
           pill.startTime = (totalDuration * leftMargin) / 100;
         }
         return pill;

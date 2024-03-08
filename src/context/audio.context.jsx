@@ -41,6 +41,8 @@ export const AudioProvider = ({ children }) => {
       audioSource.onended = () => {
         audioSource.stop();
       }
+    }else{
+      audioSource.stop();
     }
   };
 
