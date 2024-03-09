@@ -1,0 +1,23 @@
+.progressContainer {
+    position: relative;
+    height: 100%; /* Adjust height as needed */
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+.progressLine {
+    position: absolute;
+    top:0;
+    height: 100%;
+    width: 2px; /* Width of the progress line */
+    background-color: red; /* Color of the progress line */
+    /* cursor: pointer;*/
+}
+
+.progressLine.dragging {
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: -ms-grab;
+    cursor: -o-grab;
+    cursor: grabbing;
+}

@@ -28,22 +28,6 @@
   cursor: pointer;
 }
 
-.progressContainer {
-  width: 100%;
-  position: relative;
-  height: 10px;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background-color: darkgray;
-  margin-top: 1rem;
-}
-
-.progressBar {
-  width: 0;
-  height: 100%;
-  background-color: cornflowerblue;
-}
-
 @media screen and (max-width: 768px) {
   .appContainer {
     width: 100%;

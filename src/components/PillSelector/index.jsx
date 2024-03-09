@@ -4,7 +4,7 @@ import { useAudio } from "../../context";
 import styles from "./PillSelector.module.css";
 
 const PillSelector = () => {
-  const { setNewAudioPills, playAudio, isPlaying } = useAudio();
+  const { setNewAudioPills, playAudio, isPlaying, progress } = useAudio();
 
 
   const pillClickHandler = (soundSource, soundName, soundColor) => {
@@ -40,11 +40,12 @@ const PillSelector = () => {
               duration: duration,
               startTime: 0,
               bgColor: soundColor,
+              running: false,
             };
             
             // Add the new pill to the list of audio pills
             setNewAudioPills((prevPills) => [...prevPills, newPill])
-            if(isPlaying){ playAudio(newPill); }
+            if(isPlaying && progress<=duration){ playAudio(newPill); }
 
           })
           .catch((error) => {

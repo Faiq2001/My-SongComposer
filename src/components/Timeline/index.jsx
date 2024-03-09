@@ -6,7 +6,7 @@ import styles from "./Timeline.module.css";
 
 const TimelineRow = ({ audioData, totalDuration }) => {
   const { audioName, duration, startTime, bgColor, id } = audioData;
-  const { audioPills, setNewAudioPills } = useAudio();
+  const { audioPills, setNewAudioPills, progress } = useAudio();
 
   const [isDragging, setIsDragging] = useState(false);
   const [leftMargin, setLeftMargin] = useState(
@@ -18,6 +18,7 @@ const TimelineRow = ({ audioData, totalDuration }) => {
 
   const handleMouseDown = (e, id) => {
     // width of container
+    e.preventDefault();
     const parentWidth = e.currentTarget.parentElement.offsetWidth;
     setIsDragging(true);
 
@@ -63,9 +64,11 @@ const TimelineRow = ({ audioData, totalDuration }) => {
     setNewAudioPills((prevPills) => {
       return prevPills.map((pill) => {
         if (pill.id === selectedPill) {
-          if(pill.source.state==='running'){
-            pill.context.suspend;
-          }
+          // if( pill.source && !pill.source.state && (totalDuration * leftMargin) / 100 < progress){
+          //   console.log("in");
+          //   pill.source.stop();
+          // }
+          // console.log(pill.source.state);
           pill.startTime = (totalDuration * leftMargin) / 100;
         }
         return pill;

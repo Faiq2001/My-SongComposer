@@ -6,7 +6,7 @@ export const AudioProvider = ({ children }) => {
   const [audioPills, setAudioPills] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const totalDuration = 50;
+  const totalDuration = 60;
 
   const setNewAudioPills = async (newPills) => {
     return new Promise((resolve) => {
@@ -35,14 +35,17 @@ export const AudioProvider = ({ children }) => {
         }
         const offset = Math.max(progress - pill.startTime, 0); // Calculate the offset for starting the audio
         audioSource.start(0, offset);
+        pill.running = true;
       }
 
       // Listen for when the audio playback ends
       audioSource.onended = () => {
-        audioSource.stop();
+          audioSource.stop();
+          pill.running=false;
       }
-    }else{
-      audioSource.stop();
+    }else if(pill.running){
+        audioSource.stop();
+        pill.running = false;
     }
   };
 

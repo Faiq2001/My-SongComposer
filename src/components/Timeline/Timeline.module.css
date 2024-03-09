@@ -1,5 +1,56 @@
 .timelineContainer {
   width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timelineRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #ced6e0;
+  border-bottom: 1px solid black;
+  margin: 0; /* Remove any margins */
+  padding: 0; /* Remove padding */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.rowPill {
+  width: 100%;
+  border-radius: 1.5rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin: 0.5rem 0; 
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.rowPill.dragging {
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: -ms-grab;
+  cursor: -o-grab;
+  cursor: grabbing;
+}
+
+@media screen and (max-width: 768px) {
+  .rowPill {
+    font-size: 0.6rem;
+  }
+}
+
+
+
+/* .timelineContainer {
+  width: 100%;
   margin-top: 2rem;
   padding: 1rem;
   display: flex;
@@ -47,4 +98,4 @@
   .rowPill {
     font-size: 0.6rem;
   }
-}
+} */
