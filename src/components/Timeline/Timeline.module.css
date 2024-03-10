@@ -23,61 +23,31 @@
   border-radius: 1.5rem;
   padding: 0.5rem 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   color: #fff;
   font-size: 0.8rem;
   cursor: pointer;
-  margin: 0.5rem 0; 
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-.rowPill.dragging {
-  cursor: grab;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: -ms-grab;
-  cursor: -o-grab;
-  cursor: grabbing;
-}
-
-@media screen and (max-width: 768px) {
-  .rowPill {
-    font-size: 0.6rem;
-  }
-}
-
-
-
-/* .timelineContainer {
-  width: 100%;
-  margin-top: 2rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.timelineRow {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 1rem 0;
   position: relative;
-  background-color: #ced6e0;
-  border-bottom: 1px solid black;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.rowPill {
-  width: 100%;
-  border-radius: 1.5rem;
-  padding: 0.5rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 0.8rem;
-  cursor: pointer;
+.closeBtn {
+  display: none; /* Initially hide the close button */
+  position: absolute;
+  top: 50%;
+  right: 0.5rem; /* Adjust the distance from the right edge */
+  transform: translateY(-50%);
+}
+
+.rowPill:hover .closeBtn {
+  display: inline-block; /* Show the close button when the cursor hovers over the row pill */
+}
+
+.rowPill p {
+  margin: 0 auto; /* Center the text horizontally */
 }
 
 .rowPill.dragging {
@@ -89,13 +59,8 @@
   cursor: grabbing;
 }
 
-
 @media screen and (max-width: 768px) {
-  .timelineContainer {
-    padding: 0.5rem;
-  }
-
   .rowPill {
     font-size: 0.6rem;
   }
-} */
+}

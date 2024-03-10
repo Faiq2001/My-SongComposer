@@ -47,9 +47,6 @@ const ProgressBar = () => {
 
     return (
         <div className="progressContainer" ref={progressContainerRef}>
-            {/* <div className="progressBar"
-                style={{width: `${(progress / totalDuration) * 100}%`}}
-            ></div> */}
             <Timeline />
             <div
                 className={`progressLine ${isDragging ? "dragging" : ""}`}

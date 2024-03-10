@@ -13,62 +13,57 @@ const TimelineRow = ({ audioData, totalDuration }) => {
     calculateOffset(startTime, totalDuration)
   );
   const [startX, setStartX] = useState(0);
-
   const [selectedPill, setSelectedPill] = useState("");
+  
+  const removePill = (idToRemove) => {
+    audioPills.forEach((pill) => {
+      if(pill.id===idToRemove && pill.running){
+        pill.context.suspend();
+        pill.source.stop();
+        pill.running = false;
+        pill.source.disconnect();
+      }
+    });
+    setNewAudioPills((prevPills) => {
+      return prevPills.map((pill) => {
+        if (pill.id === idToRemove) {
+          return null;
+        } else {
+          return pill;
+        }
+      }).filter(Boolean); // Filter out null values (removed pills)
+    });
+  };
 
   const handleMouseDown = (e, id) => {
-    // width of container
     e.preventDefault();
     const parentWidth = e.currentTarget.parentElement.offsetWidth;
     setIsDragging(true);
 
-    // set starting x co-ordinate, converting percent to pixels
     setStartX(e.clientX - (leftMargin * parentWidth) / 100);
-
-    // set selected audio pill
     setSelectedPill(id);
   };
 
   const handleMouseMove = (e) => {
     if (isDragging) {
-      // new margin from mouse position - initial x
       const newLeftMargin = e.clientX - startX;
-
-      // Get the parent's width
       const parentWidth = e.currentTarget.parentElement.offsetWidth;
-
-      // Get the component's width
       const componentWidth = e.currentTarget.offsetWidth;
 
-      // Calculate the minimum and maximum allowed left margins
       const minLeftMargin = 0;
       const maxLeftMargin = parentWidth - componentWidth;
 
-      // Clamp the newLeftMargin to stay within the bounds
-      const clampedLeftMargin = Math.max(
-        minLeftMargin,
-        Math.min(newLeftMargin, maxLeftMargin)
-      );
-
-      // percent margin from pixels
+      const clampedLeftMargin = Math.max(minLeftMargin,Math.min(newLeftMargin, maxLeftMargin));
       const percentMargin = (clampedLeftMargin / parentWidth) * 100;
-
-      // set new margin value
       setLeftMargin(percentMargin);
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    // update audio start time based on dragged position
     setNewAudioPills((prevPills) => {
       return prevPills.map((pill) => {
         if (pill.id === selectedPill) {
-          // if( pill.source && !pill.source.state && (totalDuration * leftMargin) / 100 < progress){
-          //   console.log("in");
-          //   pill.source.stop();
-          // }
-          // console.log(pill.source.state);
           pill.startTime = (totalDuration * leftMargin) / 100;
         }
         return pill;
@@ -79,10 +74,6 @@ const TimelineRow = ({ audioData, totalDuration }) => {
   useEffect(() => {
     setLeftMargin(calculateOffset(startTime, totalDuration));
   }, [audioPills]);
-
-
-  // audio pills are rendered based on their duration and starting point compared to total duration of the timeline
-  // width represents the time for which it will be played and offset represents when it will start playing;
 
   return (
     <div className={styles.timelineRow}>
@@ -103,6 +94,9 @@ const TimelineRow = ({ audioData, totalDuration }) => {
         onTouchCancel={handleMouseUp}
       >
         <p>{audioName}</p>
+        <button className={styles.closeBtn} onClick={() => removePill(id)}>
+          Close
+        </button>
       </div>
     </div>
   );
