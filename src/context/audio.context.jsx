@@ -6,6 +6,7 @@ export const AudioProvider = ({ children }) => {
   const [audioPills, setAudioPills] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const totalDuration = 60;
 
   const setNewAudioPills = async (newPills) => {
@@ -59,6 +60,8 @@ export const AudioProvider = ({ children }) => {
         setIsPlaying,
         progress,
         setProgress,
+        playbackSpeed,
+        setPlaybackSpeed,
         playAudio,
       }}
     >

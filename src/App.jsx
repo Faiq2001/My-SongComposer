@@ -4,9 +4,10 @@ import { useAudio } from "./context";
 
 import "./App.css";
 import ProgressBar from "./ProgressBar";
+import Controls from "./Controls";
 
 function App() {
-  const { audioPills,totalDuration,setIsPlaying,isPlaying,progress,setProgress,playAudio } = useAudio();
+  const { audioPills,totalDuration,setIsPlaying,isPlaying,progress,setProgress,playAudio, playbackSpeed } = useAudio();
 
   //Play Audio
   const playHandler = async () => {
@@ -22,14 +23,13 @@ function App() {
     setIsPlaying(false);
   };
 
-  // progress bar update
   useEffect(() => {
     let startTime = Date.now();
     let animationFrameId;
 
     const updateProgress = () => {
       const elapsedTime = Date.now() - startTime;
-      const newProgress = progress + (elapsedTime / 1000); // Assuming 1 second per progress unit
+      const newProgress = progress + (elapsedTime / 1000) * playbackSpeed; // Adjust progress with playback speed
 
       if (newProgress >= totalDuration) {
         setIsPlaying(false);
@@ -49,7 +49,7 @@ function App() {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isPlaying, progress]); // Include progress in the dependencies array to trigger the effect on progress updates
+  }, [isPlaying, progress, totalDuration, setIsPlaying, setProgress, playbackSpeed]);
 
   // Check for whether to start the audio or end the time
   useEffect(() => {
@@ -69,7 +69,8 @@ function App() {
     <div className="appContainer">
       <h1 className="appTitle">Common, Common start the compose now!!!</h1>
       <PillSelector />
-      <div className="actionCenter">
+      <Controls />
+      {/* <div className="actionCenter">
         <div className="buttonContainer">
           {isPlaying ? (
             <>
@@ -93,7 +94,7 @@ function App() {
             </>
           )}
         </div>
-      </div>
+      </div> */}
       <ProgressBar />
     </div>
   );

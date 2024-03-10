@@ -10,7 +10,7 @@
     height: 100%;
     width: 2px; /* Width of the progress line */
     background-color: red; /* Color of the progress line */
-    /* cursor: pointer;*/
+    cursor: pointer;
 }
 
 .progressLine.dragging {
