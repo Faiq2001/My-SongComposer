@@ -1,8 +1,6 @@
-import { PillSelector } from "./components";
+import { PillSelector, ProgressBar, Controls } from "./components";
 
 import "./App.css";
-import ProgressBar from "./ProgressBar";
-import Controls from "./Controls";
 
 function App() {
   return (

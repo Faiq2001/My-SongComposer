@@ -1,7 +1,5 @@
-import { useAudio } from "./context";
-
-import "./Controls.css";
-
+import { useAudio } from "../../context";
+import styles from "./Controls.module.css";
 import { FaPlay, FaPause } from 'react-icons/fa';
 
 const Controls = () => {
@@ -36,17 +34,17 @@ const Controls = () => {
   };
   
   return (
-    <div className="controlsContainer">
-        <div className="Display">
+    <div className={styles.controlsContainer}>
+        <div className={styles.Display}>
             <span>Time: </span>
             <span>{formatTime(progress)}</span>
             <span> / </span>
             <span>{formatTime(totalDuration)}</span>
         </div>
-        <div className="PlayPauseBtn" onClick={togglePlayPause}>
+        <div className={styles.PlayPauseBtn} onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
         </div>
-        <div className="SpeedBtn" onClick={handlePlaybackSpeedChange}>
+        <div className={styles.SpeedBtn} onClick={handlePlaybackSpeedChange}>
             {playbackSpeed}x
         </div> 
     </div>

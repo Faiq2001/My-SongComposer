@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useAudio } from "./context";
-import "./ProgressBar.css";
-import { Timeline } from "./components";
+import { useAudio } from "../../context";
+import styles from "./ProgressBar.module.css";
+import { Timeline } from "../../components";
 
 const ProgressBar = () => {
     const { audioPills,totalDuration,setIsPlaying,isPlaying,progress,setProgress,playAudio, playbackSpeed } = useAudio();
@@ -80,10 +80,10 @@ const ProgressBar = () => {
 
 
     return (
-        <div className="progressContainer" ref={progressContainerRef}>
+        <div className={styles.progressContainer} ref={progressContainerRef}>
             <Timeline />
             <div
-                className={`progressLine ${isDragging ? "dragging" : ""}`}
+                className={`${styles.progressLine} ${isDragging ? "dragging" : ""}`}
                 style={{ left: `${(progress / totalDuration) * 100}%` }}
                 onMouseDown={(e) => handleProgressMouseDown(e)}
                 onTouchStart={(e) => handleProgressMouseDown(e)}
