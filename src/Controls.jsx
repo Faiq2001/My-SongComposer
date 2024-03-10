@@ -1,5 +1,8 @@
 import { useAudio } from "./context";
+
 import "./Controls.css";
+
+import { FaPlay, FaPause } from 'react-icons/fa';
 
 const Controls = () => {
   const { isPlaying, setIsPlaying, audioPills, totalDuration, playbackSpeed, setPlaybackSpeed, playAudio, progress } = useAudio();
@@ -41,7 +44,7 @@ const Controls = () => {
             <span>{formatTime(totalDuration)}</span>
         </div>
         <div className="PlayPauseBtn" onClick={togglePlayPause}>
-            {isPlaying ? "Pause" : "Play"}
+            {isPlaying ? <FaPause /> : <FaPlay />}
         </div>
         <div className="SpeedBtn" onClick={handlePlaybackSpeedChange}>
             {playbackSpeed}x

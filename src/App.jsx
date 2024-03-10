@@ -44,34 +44,9 @@ function App() {
 
   return (
     <div className="appContainer">
-      <h1 className="appTitle">Common, Common start the compose now!!!</h1>
+      <h1 className="appTitle">Let's start the composition!!!</h1>
       <PillSelector />
       <Controls />
-      {/* <div className="actionCenter">
-        <div className="buttonContainer">
-          {isPlaying ? (
-            <>
-              <button
-                className="audioBtn"
-                id="pause-button"
-                onClick={pauseHandler}
-              >
-                Pause
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="audioBtn"
-                id="play-button"
-                onClick={playHandler}
-              >
-                Play
-              </button>
-            </>
-          )}
-        </div>
-      </div> */}
       <ProgressBar />
     </div>
   );

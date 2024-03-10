@@ -10,9 +10,16 @@
 .PlayPauseBtn {
     flex: 1;
     margin: 0 auto;
+    cursor: default;
 }
 
 .SpeedBtn {
     flex: 0;
     margin-left: auto;
+    cursor: default;
+}
+
+.PlayPauseBtn:hover,
+.SpeedBtn:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
 }

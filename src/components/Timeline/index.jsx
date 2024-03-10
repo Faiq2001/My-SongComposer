@@ -4,6 +4,8 @@ import { calculateOffset, calculateWidth } from "../../common/utils";
 
 import styles from "./Timeline.module.css";
 
+import { FaTimes } from 'react-icons/fa';
+
 const TimelineRow = ({ audioData, totalDuration }) => {
   const { audioName, duration, startTime, bgColor, id } = audioData;
   const { audioPills, setNewAudioPills, progress } = useAudio();
@@ -95,7 +97,7 @@ const TimelineRow = ({ audioData, totalDuration }) => {
       >
         <p>{audioName}</p>
         <button className={styles.closeBtn} onClick={() => removePill(id)}>
-          Close
+          <FaTimes />
         </button>
       </div>
     </div>
