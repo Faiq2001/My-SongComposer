@@ -5,8 +5,11 @@ import { AudioProvider } from "./context";
 
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <AudioProvider>
-    <App />
-  </AudioProvider>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <AudioProvider>
+      <App />
+    </AudioProvider>
+  </React.StrictMode>
 );
