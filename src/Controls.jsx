@@ -1,23 +1,8 @@
-import { useState, useEffect } from "react";
 import { useAudio } from "./context";
+import "./Controls.css";
 
 const Controls = () => {
-  const { isPlaying, setIsPlaying, audioPills, totalDuration, playbackSpeed, setPlaybackSpeed, playAudio } = useAudio();
-  const [currentTime, setCurrentTime] = useState(0);
-
-  useEffect(() => {
-    let interval;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + (1 / playbackSpeed));
-      }, 1000 / playbackSpeed);
-    } else {
-      clearInterval(interval);
-    }
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isPlaying, playbackSpeed]);
+  const { isPlaying, setIsPlaying, audioPills, totalDuration, playbackSpeed, setPlaybackSpeed, playAudio, progress } = useAudio();
 
   const togglePlayPause = () => {
     if (isPlaying) {
@@ -27,7 +12,6 @@ const Controls = () => {
       setIsPlaying(false);
     } else {
       setIsPlaying(true);
-      setCurrentTime(0);
       audioPills.forEach((file) => {
         playAudio(file);
       });
@@ -41,24 +25,27 @@ const Controls = () => {
 
   const formatTime = (timeInSeconds) => {
     const totalSeconds = Math.floor(timeInSeconds);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
     const milliseconds = Math.floor((timeInSeconds - totalSeconds) * 100);
-    return `${totalSeconds}.${milliseconds.toString().padStart(2, '0')}`;
+  
+    return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
   };
-
+  
   return (
     <div className="controlsContainer">
         <div className="Display">
             <span>Time: </span>
-            <span>{formatTime(totalDuration * (currentTime / totalDuration))}</span>
+            <span>{formatTime(progress)}</span>
             <span> / </span>
             <span>{formatTime(totalDuration)}</span>
         </div>
-        <button className="PlayPauseBtn" onClick={togglePlayPause}>
-        {isPlaying ? "Pause" : "Play"}
-        </button>
-        <button className="SpeedBtn" onClick={handlePlaybackSpeedChange}>
-        {playbackSpeed}x
-        </button>
+        <div className="PlayPauseBtn" onClick={togglePlayPause}>
+            {isPlaying ? "Pause" : "Play"}
+        </div>
+        <div className="SpeedBtn" onClick={handlePlaybackSpeedChange}>
+            {playbackSpeed}x
+        </div> 
     </div>
   );
 };

@@ -1,29 +1,18 @@
-/* Controls.css */
 .controlsContainer {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
-  }
+    align-items: center;
+}
   
-  .Display {
-    display: flex; /* Display the time elements as flex items */
-    align-items: center; /* Align items vertically in the center */
-  }
+.Display {
+    flex: 1;
+}
   
-  .Display span {
-    margin-right: 0.5rem; /* Add margin to separate from time values */
-  }
-  
-  .PlayPauseBtn {
-    margin-left: 0 auto; /* Push the play/pause button to the right */
-  }
-  
-  .SpeedBtn {
-    margin-left: auto; /* Add some space between play/pause button and speed button */
-  }
-  
-  @media screen and (max-width: 768px) {
-    .controlsContainer {
-      flex-direction: column;
-    }
-  }
-  
+.PlayPauseBtn {
+    flex: 1;
+    margin: 0 auto;
+}
+
+.SpeedBtn {
+    flex: 0;
+    margin-left: auto;
+}

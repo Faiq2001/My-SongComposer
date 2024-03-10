@@ -9,20 +9,6 @@ import Controls from "./Controls";
 function App() {
   const { audioPills,totalDuration,setIsPlaying,isPlaying,progress,setProgress,playAudio, playbackSpeed } = useAudio();
 
-  //Play Audio
-  const playHandler = async () => {
-    setIsPlaying(true);
-    audioPills.forEach((file) => { playAudio(file); });
-  };
-
-  // Pause Audio
-  const pauseHandler = () => {
-    audioPills.forEach((pill) => {
-      pill.context.suspend(); 
-    });
-    setIsPlaying(false);
-  };
-
   useEffect(() => {
     let startTime = Date.now();
     let animationFrameId;
@@ -34,9 +20,14 @@ function App() {
       if (newProgress >= totalDuration) {
         setIsPlaying(false);
         setProgress(0); // Reset progress to 0 when it reaches the end
+        audioPills.forEach((pill) => {
+          pill.source.stop(); 
+        });
       } else {
         setProgress(newProgress);
         animationFrameId = requestAnimationFrame(updateProgress);
+        if(isPlaying && progress<=totalDuration){  audioPills.forEach((file) => { playAudio(file); });}
+
       }
     };
 
@@ -50,20 +41,6 @@ function App() {
       cancelAnimationFrame(animationFrameId);
     };
   }, [isPlaying, progress, totalDuration, setIsPlaying, setProgress, playbackSpeed]);
-
-  // Check for whether to start the audio or end the time
-  useEffect(() => {
-
-    if(isPlaying && progress<=totalDuration){  audioPills.forEach((file) => { playAudio(file); });}
-
-    if (progress > totalDuration) {
-      setProgress(0);
-      setIsPlaying(false);
-      audioPills.forEach((pill) => {
-        pill.source.stop(); 
-      });
-    }
-  }, [progress]);
 
   return (
     <div className="appContainer">
